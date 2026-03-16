@@ -27,3 +27,4 @@ Due to the digital format of my project, you will notice that I have made the de
    ```
    $ dotnet run
    ```
+4. To stop the local web server, you can press `Ctrl` + `C` from the terminal session that is running it. 
