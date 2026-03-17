@@ -1,0 +1,84 @@
+﻿@page "/endangered-species"
+@attribute [StreamRendering]
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@inject IHttpClientFactory ClientFactory
+
+<PageTitle>Endangered Species</PageTitle>
+
+<h1>Endangered Species</h1>
+
+<p>This component demonstrates showing data.</p>
+
+@if (table == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                @foreach (Column column in table?.Meta?.Columns)
+                {
+                    <th>@column.DisplayName</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (object[] species in table?.Species)
+            {
+                <tr>
+                    @foreach (object property in species)
+                    {
+                        <td>@property</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Table? table;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Calling external web API (Source: https://learn.microsoft.com/en-us/aspnet/core/blazor/call-web-api?view=aspnetcore-10.0#client-side-scenarios-for-calling-external-web-apis)
+        String url = "https://ecos.fws.gov/ecp/pullreports/catalog/species/report/species/export?format=json&columns=%2Fspecies%40cn%2Csn%2Cstatus%2Cdesc%2Clisting_date&sort=%2Fspecies%40cn%20asc%3B%2Fspecies%40sn%20asc";
+
+        // The "using" keyword is necessary here for resource management b/c HttpRequestMessage is a Disposable Instance (Source: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/using)
+        using var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+        var client = ClientFactory.CreateClient();
+        using var response = await client.SendAsync(request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            using var responseStream = await response.Content.ReadAsStreamAsync();
+            table = await JsonSerializer.DeserializeAsync<Table>(responseStream);
+        }
+
+    }
+
+    public class Table
+    {
+        [JsonPropertyName("meta")]
+        public Meta? Meta { get; set; }
+
+        [JsonPropertyName("data")]
+        public object[][]? Species { get; set; }
+    }
+
+    public class Meta
+    {
+        [JsonPropertyName("columns")]
+        public Column[]? Columns { get; set; }
+    }
+
+    public class Column
+    {
+        [JsonPropertyName("displayName")]
+        public string? DisplayName { get; set; }
+    }
+}
