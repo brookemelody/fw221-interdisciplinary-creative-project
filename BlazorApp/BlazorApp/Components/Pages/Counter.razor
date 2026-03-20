@@ -7,22 +7,36 @@
 
 <p role="status">Current score: @score</p>
 
-<h2><span>@(currentQuestionIdx + 1). </span>@((MarkupString) quizQuestions[currentQuestionIdx].Question)</h2>
-<InputRadioGroup @bind-Value="userAnswer">
-    @foreach (string answerChoice in quizQuestions.ElementAt(currentQuestionIdx).AnswerChoices)
+@if(!quizFinished)
+{
+    <h2><span>@(currentQuestionIdx + 1). </span>@((MarkupString)quizQuestions[currentQuestionIdx].Question)</h2> @* It's nice that Blazor's state management seems to be quite straightforward to work with! *@ 
+    @if (status is not null)
     {
-        <InputRadio class="form-check-input" id="@answerChoice" Value="@answerChoice" />
-        <label class="form-check-label" for="@answerChoice">@answerChoice</label>
+        <p class="text-danger">@status</p>
     }
-</InputRadioGroup>
+    <InputRadioGroup @bind-Value="userAnswer">
+        @foreach (string answerChoice in quizQuestions.ElementAt(currentQuestionIdx).AnswerChoices)
+        {
+            <InputRadio class="form-check-input" id="@answerChoice" Value="@answerChoice" />
+            <label class="form-check-label" for="@answerChoice">@answerChoice</label>
+        }
+    </InputRadioGroup>
 
-<button class="btn btn-primary" @onclick="AnswerQuestion">Submit</button>
+    <button class="btn btn-primary" @onclick="AnswerQuestion">Submit</button>
+}
+else
+{
+    <h2>Quiz Results: </h2>  @* TODO: This may be kind of pointless since I don't allow the user to proceed to the next question until they get it right, so the final score will always be 100% *@
+    <p><span>@score</span>/<span>@quizQuestions.Count</span></p>
+}
 
 @code {
+    private bool quizFinished = false;
     private int score = 0;
     private List<QuizQuestion> quizQuestions = new List<QuizQuestion>();
-    private string userAnswer = "";
     private int currentQuestionIdx = 0;
+    private string userAnswer = "";
+    private string? status;
 
     protected override void OnInitialized()
     {
@@ -43,15 +57,29 @@
     {
         QuizQuestion currentQuestion = quizQuestions[currentQuestionIdx];
         bool correctlyAnswered = false;
-        if (userAnswer.Equals(currentQuestion.AnswerChoices[currentQuestion.CorrectAnswerIdx])) {
+        if (userAnswer.Equals(currentQuestion.AnswerChoices[currentQuestion.CorrectAnswerIdx]) && !quizFinished) {
             score++;
             correctlyAnswered = true;
         }
 
+        if (correctlyAnswered)
+        {
+            status = null;
+        }
+        else
+        {
+            status = "Wrong answer. Try again!";
+        }
+
         // Proceed to next question only if question was answered correctly and is not the last question in the quiz
-        if (correctlyAnswered && currentQuestionIdx + 1 < quizQuestions.Count)
+        if (correctlyAnswered)
         {
             currentQuestionIdx++;
+        }
+        // Finish the quiz if the current question was the last question
+        if (currentQuestionIdx == quizQuestions.Count)
+        {
+            quizFinished = true;
         }
     }
 
