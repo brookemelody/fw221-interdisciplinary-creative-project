@@ -8,25 +8,31 @@
 
 <h1>Endangered Species</h1>
 
-<p>This component demonstrates showing data.</p>
+<p>
+    Data courtesy of “ECOS: ECOS Data Service Documentation.” Fws.gov, 2026, ecos.fws.gov/ecp/report/adhocDocumentation?catalogId=species&reportId=species. Accessed 20 Mar. 2026.
+</p>
 
 @if (table == null)
 {
     <p><em>Loading...</em></p>
+}
+else if (table.Meta == null || table.Meta.Columns == null || table.Species == null)
+{
+    <p><strong>Error fetching data.</strong></p>
 }
 else
 {
     <table class="table">
         <thead>
             <tr>
-                @foreach (Column column in table?.Meta?.Columns)
+                @foreach (Column column in table.Meta.Columns)
                 {
                     <th>@column.DisplayName</th>
                 }
             </tr>
         </thead>
         <tbody>
-            @foreach (object[] species in table?.Species)
+            @foreach (object[] species in table.Species)
             {
                 <tr>
                     @foreach (object property in species)
