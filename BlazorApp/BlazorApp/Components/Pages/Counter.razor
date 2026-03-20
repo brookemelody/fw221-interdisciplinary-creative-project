@@ -12,21 +12,31 @@
     <h2><span>@(currentQuestionIdx + 1). </span>@((MarkupString)quizQuestions[currentQuestionIdx].Question)</h2> @* It's nice that Blazor's state management seems to be quite straightforward to work with! *@ 
     @if (status is not null)
     {
-        <p class="text-danger">@status</p>
+        <p class="@(status.StartsWith("Correct") ? "text-success" : "text-danger")">@status</p>
     }
-    <InputRadioGroup @bind-Value="userAnswer">
-        @foreach (string answerChoice in quizQuestions.ElementAt(currentQuestionIdx).AnswerChoices)
-        {
-            <InputRadio class="form-check-input" id="@answerChoice" Value="@answerChoice" />
-            <label class="form-check-label" for="@answerChoice">@answerChoice</label>
-        }
-    </InputRadioGroup>
+    <fieldset disabled="@disableAnswer">
+        <InputRadioGroup @bind-Value="userAnswer">
+            @foreach (string answerChoice in quizQuestions.ElementAt(currentQuestionIdx).AnswerChoices)
+            {
+                <InputRadio class="form-check-input" id="@answerChoice" Value="@answerChoice" />
+                <label class="form-check-label" for="@answerChoice">@answerChoice</label>
+            }
+        </InputRadioGroup>
+    </fieldset>
 
-    <button class="btn btn-primary" @onclick="AnswerQuestion">Submit</button>
+    @if(!disableAnswer)
+    {
+        <button class="btn btn-primary" @onclick="AnswerQuestion">Check</button>
+    }
+    else
+    {
+        <button class="btn btn-primary" @onclick="GoToNextQuestion">Next Question</button>
+    }
+
 }
 else
 {
-    <h2>Quiz Results: </h2>  @* TODO: This may be kind of pointless since I don't allow the user to proceed to the next question until they get it right, so the final score will always be 100% *@
+    <h2>Quiz Results: </h2>
     <p><span>@score</span>/<span>@quizQuestions.Count</span></p>
 }
 
@@ -37,6 +47,7 @@ else
     private int currentQuestionIdx = 0;
     private string userAnswer = "";
     private string? status;
+    private bool disableAnswer = false;
 
     protected override void OnInitialized()
     {
@@ -64,18 +75,22 @@ else
 
         if (correctlyAnswered)
         {
-            status = null;
+            status = "Correct answer!";
         }
         else
         {
-            status = "Wrong answer. Try again!";
+            status = "Wrong answer!";
         }
 
-        // Proceed to next question only if question was answered correctly and is not the last question in the quiz
-        if (correctlyAnswered)
-        {
-            currentQuestionIdx++;
-        }
+        disableAnswer = true;
+    }
+
+    private void GoToNextQuestion()
+    {
+        currentQuestionIdx++;
+        status = null;
+        disableAnswer = false;
+
         // Finish the quiz if the current question was the last question
         if (currentQuestionIdx == quizQuestions.Count)
         {
