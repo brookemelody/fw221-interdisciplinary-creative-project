@@ -1,19 +1,71 @@
-﻿@page "/counter"
+﻿@page "/silent-spring"
 @rendermode InteractiveServer
 
-<PageTitle>Counter</PageTitle>
+<PageTitle>Silent Spring</PageTitle>
 
-<h1>Counter</h1>
+<h1>Silent Spring</h1>
 
-<p role="status">Current count: @currentCount</p>
+<p role="status">Current score: @score</p>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<h2><span>@(currentQuestionIdx + 1). </span>@((MarkupString) quizQuestions[currentQuestionIdx].Question)</h2>
+<InputRadioGroup @bind-Value="userAnswer">
+    @foreach (string answerChoice in quizQuestions.ElementAt(currentQuestionIdx).AnswerChoices)
+    {
+        <InputRadio class="form-check-input" id="@answerChoice" Value="@answerChoice" />
+        <label class="form-check-label" for="@answerChoice">@answerChoice</label>
+    }
+</InputRadioGroup>
+
+<button class="btn btn-primary" @onclick="AnswerQuestion">Submit</button>
 
 @code {
-    private int currentCount = 0;
+    private int score = 0;
+    private List<QuizQuestion> quizQuestions = new List<QuizQuestion>();
+    private string userAnswer = "";
+    private int currentQuestionIdx = 0;
 
-    private void IncrementCount()
+    protected override void OnInitialized()
     {
-        currentCount++;
+        quizQuestions.Add(new QuizQuestion(
+            "Which pesticide did Rachel Carson focus on in her book <em>Silent Spring</em>?",
+            ["Methyl Bromide", "DDT", "Chlorpyrifos", "2,4-D"],
+            1
+        ));
+
+        quizQuestions.Add(new QuizQuestion(
+            "The heightened awareness of environmental issues among the general public brought by <em>Silent Spring's</em> impact directly led to which of the following consequences?",
+                ["The creation of the Environmental Protection Agency (EPA)", "Accusing chemical companies of spreading disinformation became legally protected under freedom of speech"],
+            0
+        ));
+    }
+
+    private void AnswerQuestion()
+    {
+        QuizQuestion currentQuestion = quizQuestions[currentQuestionIdx];
+        bool correctlyAnswered = false;
+        if (userAnswer.Equals(currentQuestion.AnswerChoices[currentQuestion.CorrectAnswerIdx])) {
+            score++;
+            correctlyAnswered = true;
+        }
+
+        // Proceed to next question only if question was answered correctly and is not the last question in the quiz
+        if (correctlyAnswered && currentQuestionIdx + 1 < quizQuestions.Count)
+        {
+            currentQuestionIdx++;
+        }
+    }
+
+    public class QuizQuestion
+    {
+        public string Question { get; set; }
+        public string[] AnswerChoices { get; set; }
+        public int CorrectAnswerIdx { get; set; }
+
+        public QuizQuestion(string Question, string[] AnswerChoices, int CorrectAnswerIdx)
+        {
+            this.Question = Question;
+            this.AnswerChoices = AnswerChoices;
+            this.CorrectAnswerIdx = CorrectAnswerIdx;
+        }
     }
 }
