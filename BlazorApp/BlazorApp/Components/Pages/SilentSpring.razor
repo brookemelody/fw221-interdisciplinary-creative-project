@@ -4,7 +4,10 @@
 <PageTitle>Silent Spring</PageTitle>
 
 <h1>Silent Spring</h1>
+<img src="https://upload.wikimedia.org/wikipedia/en/a/ac/SilentSpring.jpg" alt="Original cover of the book Silent Spring by Rachel Carson" />
+<p>Popular culture can also strongly influence public perceptions of conservation and environmental justice. One notable example is the 1962 book <em>Silent Spring</em> by American marine biologist and conservationist Rachel Carson.</p>
 
+<h1>Quiz</h1>
 <p role="status">Current score: @score</p>
 
 @if(!quizFinished)
@@ -15,11 +18,13 @@
         <p class="@(status.StartsWith("Correct") ? "text-success" : "text-danger")">@status</p>
     }
     <fieldset disabled="@disableAnswer">
-        <InputRadioGroup @bind-Value="userAnswer">
+        <InputRadioGroup @bind-Value="userAnswer" class="d-flex flex-column gap-1">
             @foreach (string answerChoice in quizQuestions.ElementAt(currentQuestionIdx).AnswerChoices)
             {
-                <InputRadio class="form-check-input" id="@answerChoice" Value="@answerChoice" />
-                <label class="form-check-label" for="@answerChoice">@answerChoice</label>
+                <section class="d-flex gap-1">
+                    <InputRadio class="form-check-input" id="@answerChoice" Value="@answerChoice" />
+                    <label class="form-check-label" for="@answerChoice">@answerChoice</label>
+                </section>
             }
         </InputRadioGroup>
     </fieldset>
@@ -37,7 +42,7 @@
 else
 {
     <h2>Quiz Results: </h2>
-    <p><span>@score</span>/<span>@quizQuestions.Count</span></p>
+    <p><span>@score</span>/<span>@quizQuestions.Count</span> - <span>@((double) score / quizQuestions.Count * 100)</span>%</p>
 }
 
 @code {
@@ -59,7 +64,7 @@ else
 
         quizQuestions.Add(new QuizQuestion(
             "The heightened awareness of environmental issues among the general public brought by <em>Silent Spring's</em> impact directly led to which of the following consequences?",
-                ["The creation of the Environmental Protection Agency (EPA)", "Accusing chemical companies of spreading disinformation became legally protected under freedom of speech"],
+                ["The creation of the Environmental Protection Agency (EPA)", "Accusing chemical companies of spreading disinformation became legally protected under freedom of speech", "Nothing"],
             0
         ));
     }

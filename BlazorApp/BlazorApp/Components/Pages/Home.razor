@@ -1,14 +1,40 @@
 ﻿@page "/"
+@rendermode InteractiveServer
 
 <PageTitle>War on Wolves</PageTitle>
 
 <h1>War on Wolves</h1>
 
-<section>
-    <h2>European Settlers in North America</h2>
-    <p>European settlers brought their own cultural attitudes about predatory species such as wolves with them to the New World. The driving force behind this hostile relationship between humans and wolves was the fight over natural resources in the form of livestock [<NavLink href="#1">1</NavLink>]. For the settlers, their horses, cattle, sheep, and pigs were critical sources of food and transportation. Likewise, the wolves saw these livestock as valuable prey due to the relative ease of hunting docile farm animals.</p>
-    <img src="https://www.pbs.org/wnet/nature/files/2008/11/610_lobo_wolf-wars.jpg" alt="A group of men sitting in front of the corpses of hunted wolves" />
-</section>
+<button class="btn btn-primary" @onclick="TogglePerspective">
+    <p class="mb-0">Learn about the
+        @if (showEuropeanPerspective)
+        {
+            <span>Native American</span>
+        }
+        else
+        {
+            <span>European settler</span>
+        }
+        perspective
+    </p> 
+</button>
+
+@if (showEuropeanPerspective)
+{
+    <section>
+        <h2>European Settlers in North America</h2>
+        <p>European settlers brought their own cultural attitudes about predatory species such as wolves with them from their homeland(s) to the New World. The driving force behind this hostile relationship between humans and wolves was the fight over natural resources in the form of livestock [<NavLink href="#1">1</NavLink>]. For the settlers, their horses, cattle, sheep, and pigs were critical sources of food and transportation. Likewise, the wolves saw these livestock as valuable prey due to the relative ease of hunting docile farm animals.</p>
+        <img src="https://www.pbs.org/wnet/nature/files/2008/11/610_lobo_wolf-wars.jpg" alt="A group of men sitting in front of the corpses of hunted wolves" />
+    </section>
+}
+else
+{
+    <section>
+        <h2>Native American Tribes</h2>
+        <p>There are hundreds of different Native American tribes that are indigenous to the North American region. Much like how the settlers with "European" origins should not necessarily be considered to be a cultural monolith, not every Native American tribe perceived wolves the same way in their own traditional cultural beliefs.</p>
+    </section>
+}
+
 
 <section>
     <h2>Bibliography</h2>
@@ -18,3 +44,12 @@
         </li>
     </ol>
 </section>
+
+@code {
+    private bool showEuropeanPerspective = true;
+
+    private void TogglePerspective()
+    {
+        showEuropeanPerspective = !showEuropeanPerspective;
+    }
+}
