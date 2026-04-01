@@ -3,14 +3,37 @@
 
 <PageTitle>Silent Spring</PageTitle>
 
-<h1>Silent Spring</h1>
-<img src="https://upload.wikimedia.org/wikipedia/en/a/ac/SilentSpring.jpg" alt="Original cover of the book Silent Spring by Rachel Carson" />
-<p>Popular culture can also strongly influence public perceptions of conservation and environmental justice. One notable example is the 1962 book <em>Silent Spring</em> by American marine biologist and conservationist Rachel Carson.</p>
-<p><em>Silent Spring</em> exposed how overuse of the pesticide DDT resulted in harm to the environment. The title of the book refers to how DDT directly caused the deaths of so many birds and wildlife that the spring was devoid of the natural sounds that these wildlife would normally be making.</p>
-<p>In the book, Carson specifically accused the chemical industry of deliberately spreading disinformation to mislead the public into believing that indiscriminate use of synthetic pesticides such as DDT was not harmful to ecosystems as well as human health. Due to this, many representatives of chemical industries were outraged by <em>Silent Spring</em> and threatened legal retribution against Carson as well as accusing her as being hysterical.</p>
-<p>Despite the challenges presented by such a dedicated public and legal campaign against it, <em>Silent Spring</em> was able to make such a profound impact on the public that it led to a reversal in US pesticide policy, a nationwide ban on DDT for agricultural uses, and the creation of the US Environmental Protection Agency (EPA).</p>
+<details open>
+    <summary>Information</summary>
+    <section>
+        <h1>Silent Spring</h1>
+        <img src="https://upload.wikimedia.org/wikipedia/en/a/ac/SilentSpring.jpg" alt="Original cover of the book Silent Spring by Rachel Carson" />
+        <p>Popular culture can also strongly influence public perceptions of conservation and environmental justice. One notable example is the 1962 book <em>Silent Spring</em> by American marine biologist and conservationist Rachel Carson.</p>
+        <p><em>Silent Spring</em> exposed how overuse of the pesticide DDT resulted in harm to the environment. The title of the book refers to how DDT directly caused the deaths of so many birds and wildlife that the spring was devoid of the natural sounds that these wildlife would normally be making [<NavLink href="#1">1</NavLink>].</p>
+        <p>In the book, Carson specifically accused the chemical industry of deliberately spreading disinformation to mislead the public into believing that indiscriminate use of synthetic pesticides such as DDT was not harmful to ecosystems as well as human health. Due to this, many representatives of chemical industries were outraged by <em>Silent Spring</em> and threatened legal retribution against Carson as well as accusing her as being hysterical [<NavLink href="#2">2</NavLink>].</p>
+        <p>Despite the challenges presented by such a dedicated public and legal campaign against it, <em>Silent Spring</em> was able to make such a profound impact on the public that it led to a reversal in US pesticide policy, a nationwide ban on DDT for agricultural uses, and the creation of the US Environmental Protection Agency (EPA) [<NavLink href="#3">3</NavLink>].</p>
 
-<h1>Quiz</h1>
+        <section>
+            <h2>Bibliography</h2>
+            <ol>
+                <li id="1">
+                    Carson, Rachel. “Silent Spring—I.” The New Yorker, 9 June 1962, www.newyorker.com/magazine/1962/06/16/silent-spring-part-1.
+                </li>
+                <li id="2">
+                    NRDC. “The Story of Silent Spring.” NRDC, 13 Aug. 2015, www.nrdc.org/stories/story-silent-spring.
+                </li>
+                <li id="3">
+                    US EPA, OA. “The Birth of EPA.” Www.epa.gov, Nov. 1985, www.epa.gov/archive/epa/aboutepa/birth-epa.html.
+                </li>
+            </ol>
+        </section>
+    </section>
+</details>
+
+<details open>
+    <summary>Quiz</summary>
+    <section>
+        <h1>Quiz</h1>
 <p role="status">Current score: @score</p>
 
 @if(!quizFinished)
@@ -47,6 +70,8 @@ else
     <h2>Quiz Results: </h2>
     <p><span>@score</span>/<span>@quizQuestions.Count</span> - <span>@((double) score / quizQuestions.Count * 100)</span>%</p>
 }
+    </section>
+</details>
 
 @code {
     private bool quizFinished = false;
