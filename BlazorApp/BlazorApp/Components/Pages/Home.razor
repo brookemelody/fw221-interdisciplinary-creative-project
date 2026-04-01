@@ -36,6 +36,9 @@ else
     <section>
         <h2>Native American Tribes</h2>
         <p>There are hundreds of different Native American tribes that are indigenous to the North American region. Much like how the settlers with "European" origins should not necessarily be considered to be a cultural monolith, not every Native American tribe perceived wolves the same way in their own traditional cultural beliefs.</p>
+        <p>However, generally speaking, most Native American tribes viewed wolves in a more positive light compared to European settlers. Since North America lacks native domesticatable animals, Native Americans did not depend as heavily on domesticated animals compared to the Europeans and therefore did not have a major reason to antagonize wolves and fight them over shared natural resources.</p>
+        <p>Certain tribes have special depictions of wolves in their cultures. For example, the origin stories of some Northwest Coast tribes such as the Quileute and Kwakiutl portray humans as being the descendants of wolves, Shoshone mythology represents their Creator god as a wolf, and the Zunis have a tradition of carving wolf fetishes out of stone for protection under the healing and hunting powers of wolves [<NavLink href="#1">1</NavLink>].</p>
+        <img src="https://upload.wikimedia.org/wikipedia/en/5/53/Zuni_wolf_fetish_with_medicine_bundle_and_heartline%2C_carved_by_Stuart_Lasiyoo.jpg" alt="A Zuni wolf fetish carved out of stone" />
     </section>
 }
 
@@ -43,15 +46,23 @@ else
 <section>
     <h2>Bibliography</h2>
     <ol>
-        <li id="1">
-            PBS. “The Wolf That Changed America | Wolf Wars: America’s Campaign to Eradicate the Wolf | Nature | PBS.” Nature, 27 Oct. 2014, www.pbs.org/wnet/nature/the-wolf-that-changed-america-wolf-wars-americas-campaign-to-eradicate-the-wolf/4312/.
-        </li>
-        <li id="2">
-            Crosby, Alfred. “The Columbian Exchange | Gilder Lehrman Institute of American History.” Gilderlehrman.org, 2025, www.gilderlehrman.org/history-resources/essays/columbian-exchange.
-        </li>
-        <li id="3">
-            “The Return of the Wolf in Europe.” World Wildlife Fund, 5 July 2021, www.worldwildlife.org/news/stories/the-return-of-the-wolf-in-europe/.
-        </li>
+        @if (showEuropeanPerspective)
+        {
+            <li id="1">
+                PBS. “The Wolf That Changed America | Wolf Wars: America’s Campaign to Eradicate the Wolf | Nature | PBS.” Nature, 27 Oct. 2014, www.pbs.org/wnet/nature/the-wolf-that-changed-america-wolf-wars-americas-campaign-to-eradicate-the-wolf/4312/.
+            </li>
+            <li id="2">
+                Crosby, Alfred. “The Columbian Exchange | Gilder Lehrman Institute of American History.” Gilderlehrman.org, 2025, www.gilderlehrman.org/history-resources/essays/columbian-exchange.
+            </li>
+            <li id="3">
+                “The Return of the Wolf in Europe.” World Wildlife Fund, 5 July 2021, www.worldwildlife.org/news/stories/the-return-of-the-wolf-in-europe/.
+            </li>
+        } else
+        {
+            <li id="1">
+                “Native American Indian Wolf Legends, Meaning and Symbolism from the Myths of Many Tribes.” Www.native-Languages.org, www.native-languages.org/legends-wolf.htm.
+            </li>
+        }
     </ol>
 </section>
 
