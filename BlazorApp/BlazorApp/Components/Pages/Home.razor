@@ -1,5 +1,7 @@
 ﻿@page "/"
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedLocalStorage ProtectedLocalStore
 
 <PageTitle>War on Wolves</PageTitle>
 
@@ -67,10 +69,18 @@ else
 </section>
 
 @code {
-    private bool showEuropeanPerspective = true;
+    private bool showEuropeanPerspective;
 
-    private void TogglePerspective()
+    protected override async Task OnInitializedAsync()
+    {
+        // Refer to here for how to use localStorage using .NET: https://learn.microsoft.com/en-us/aspnet/core/blazor/state-management/protected-browser-storage?view=aspnetcore-10.0
+        var result = await ProtectedLocalStore.GetAsync<bool>("showEuropeanPerspective");
+        showEuropeanPerspective = result.Success ? result.Value : true;
+    }
+
+    private async void TogglePerspective()
     {
         showEuropeanPerspective = !showEuropeanPerspective;
+        await ProtectedLocalStore.SetAsync("showEuropeanPerspective", showEuropeanPerspective);
     }
 }
